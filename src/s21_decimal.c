@@ -1,4 +1,4 @@
-#include "s21_decimal.h"
+#include "../include/s21_decimal.h"
 /*
   @brief: Установить нулевое значение. Обнулить все биты
   @param: d - указатель на структуру децимал
@@ -57,20 +57,54 @@ void s21_set_scale(s21_decimal *d, int scale) {
   d->bits[3] = (int)b3;
 }
 
-static inline word_index(int index) {
+/*
+  @brief: Получение индекса слова
+  @param: index - индекс бита
+*/
+static inline int word_index(int index) {
   return index / 32;
 }
 
-static inline bit_offset(int index) {
+/*
+  @brief: Получение индекса бита
+  @param: index - индекс бита
+*/
+static inline int bit_offset(int index) {
   return index % 32;
 }
 
+void s21_flags_normalize(s21_decimal *d) {
+  uint32_t b3 = (uint32_t)d->bits[3];
+  b3 &= (S21_SIGN_MASK | S21_SCALE_MASK);
+  d->bits[3] = (int)b3;
+}
+
+int s21_flags_is_valid(const s21_decimal d) {
+  uint32_t b3 = s21_bits3u(d);
+  uint32_t forbidden = b3 & ~(S21_SIGN_MASK | S21_SCALE_MASK);
+  int scale = (int)((b3 & S21_SCALE_MASK) >> S21_SCALE_SHIFT);
+  if (forbidden) return 0;
+  if (scale < 0 || scale > 28) return 0;
+  return 1;
+}
+
+/*
+  @brief: Получение значения бита
+  @param: d - структура децимала
+  @param: index - индекс бита
+*/
 int s21_get_bit(const s21_decimal d, int index) {
   if (index < 0 || index > 95) return 0;
   unsigned w = (unsigned)d.bits[word_index(index)];
   return (int)((w >> bit_offset(index)) & 1u);
 }
 
+/*
+  @brief: Установить значение бита
+  @param: d - указатель на структуру децимала
+  @param: index - индекс бита
+  @param: value - значение
+*/
 void s21_set_bit(s21_decimal *d, int index, int value) {
   if (!d) return;
   if (index < 0 || index > 95) return;

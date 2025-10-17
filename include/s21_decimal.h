@@ -4,7 +4,7 @@
 #include<stdint.h>
 
 typedef struct {
-  int bits[4];
+  uint32_t bits[4];
 } s21_decimal;
 
 #define S21_SIGN_MASK (1u << 31)
