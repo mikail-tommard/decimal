@@ -7,14 +7,6 @@ int main(){
   s21_decimal x = {.bits = {0,0,0,0}};
   dump("Стартовое значение", &x);
 
-  s21_set_bit(&x, 0, 1);
-  s21_set_bit(&x, 1, 1);
-  s21_set_bit(&x, 2, 1);
-  s21_set_bit(&x, 3, 1);
-  x.bits[3] = 0x00140001;
-
-  s21_flags_normalize(&x);
-
   dump("Обновленное значение, normalize", &x);
   printf("is validate: %d\n", s21_flags_is_valid(x));
   return 0;

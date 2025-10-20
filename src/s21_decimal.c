@@ -73,12 +73,20 @@ static inline int bit_offset(int index) {
   return index % 32;
 }
 
+/*
+  @brief: Нормализация флагов
+  @param: d - указатель на структуру децимала
+*/
 void s21_flags_normalize(s21_decimal *d) {
   uint32_t b3 = (uint32_t)d->bits[3];
   b3 &= (S21_SIGN_MASK | S21_SCALE_MASK);
   d->bits[3] = (int)b3;
 }
 
+/*
+  @brief: Проверка на валидность флага
+  @param: d - структура децимала
+*/
 int s21_flags_is_valid(const s21_decimal d) {
   uint32_t b3 = s21_bits3u(d);
   uint32_t forbidden = b3 & ~(S21_SIGN_MASK | S21_SCALE_MASK);
