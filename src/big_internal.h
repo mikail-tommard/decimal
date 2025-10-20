@@ -16,7 +16,7 @@ int s21_big_from_decimal(s21_decimal src, s21_big_decimal *dst);
 int s21_big_to_decimal(s21_big_decimal src, s21_decimal *dst);
 
 int s21_big_mul10(s21_big_decimal *d);
-int s21_big_dib10(s21_big_decimal *d);
+int s21_big_div10(s21_big_decimal *d);
 int s21_big_scale_down_bankers(s21_big_decimal *d, int target_scale);
 
 #endif
